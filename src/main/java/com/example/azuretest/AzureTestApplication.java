@@ -34,12 +34,15 @@ public class AzureTestApplication {
 		return request.getHeader("User-Agent");
 	}
 	@GetMapping("/db")
-	public void getDatabase() {
+	public String getDatabase() throws SQLException {
+		String res ="";
 		try (Connection conn = dataSource.getConnection();
 			 Statement stmt = conn.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT 1")) {
-			} catch (SQLException e) {e.printStackTrace();
-		}
+			if (rs.next()){
+				res = rs.getString("1");}
+		} catch (SQLException e) {e.printStackTrace();}
+		return res;
 	}
 
 	public static void main(String[] args) {
