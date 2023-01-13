@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @SpringBootApplication
 @RestController
@@ -30,9 +34,12 @@ public class AzureTestApplication {
 		return request.getHeader("User-Agent");
 	}
 	@GetMapping("/db")
-	public String getDatabase(){
-		return "SELECT 1";
-
+	public void getDatabase() {
+		try (Connection conn = dataSource.getConnection();
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery("SELECT 1")) {
+			} catch (SQLException e) {e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
