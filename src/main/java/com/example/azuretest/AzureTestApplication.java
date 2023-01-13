@@ -35,14 +35,13 @@ public class AzureTestApplication {
 	}
 	@GetMapping("/db")
 	public String getDatabase() throws SQLException {
-		String res ="";
+
 		try (Connection conn = dataSource.getConnection();
 			 Statement stmt = conn.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT 1")) {
-			if (rs.next()){
-				res = rs.getString("1");}
-		} catch (SQLException e) {e.printStackTrace();}
-		return res;
+			 ResultSet rs = stmt.executeQuery("SELECT 1")){
+			return rs.getString("1");
+		}
+
 	}
 
 	public static void main(String[] args) {
